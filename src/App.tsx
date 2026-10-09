@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Flame, CloudRain, Activity, Stethoscope, UserX, Phone, MapPin, CheckSquare, Trophy, ShieldCheck, PlayCircle, ChevronLeft, AlertTriangle, LayoutDashboard, Lightbulb, Medal } from 'lucide-react';
+import { Flame, CloudRain, Activity, Stethoscope, UserX, Phone, MapPin, CheckSquare, Trophy, ShieldCheck, PlayCircle, ChevronLeft, AlertTriangle, LayoutDashboard, Lightbulb, Medal, LogOut } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 const emergencies = [
@@ -55,12 +55,28 @@ const quizzes = {
   fire: [
     { q: "What should you do if your clothes catch fire?", options: ["Run fast", "Stop, Drop, and Roll", "Get a drink of water"], a: 1 },
     { q: "How should you move in a room full of smoke?", options: ["Walk normally", "Jump around", "Stay low and crawl"], a: 2 },
-    { q: "Should you go back inside for a toy?", options: ["Yes, if it's quick", "No, never go back", "Only for my favorite toy"], a: 1 }
+    { q: "Should you go back inside for a toy?", options: ["Yes, if it's quick", "No, never go back", "Only for my favorite toy"], a: 1 },
+    { q: "What number should you call for a fire emergency?", options: ["101", "102", "112"], a: 0 },
+    { q: "If a door feels hot, what should you do?", options: ["Open it fast", "Find another way out", "Wait near the door"], a: 1 }
   ],
   earthquake: [
     { q: "What is the first thing you should do?", options: ["Drop to the floor", "Run outside", "Call a friend"], a: 0 },
     { q: "Where should you take cover?", options: ["Under a sturdy table", "Near a window", "On the bed"], a: 0 },
-    { q: "When is it safe to come out?", options: ["When the shaking stops", "After 1 minute", "When you feel like it"], a: 0 }
+    { q: "When is it safe to come out?", options: ["When the shaking stops", "After 1 minute", "When you feel like it"], a: 0 },
+    { q: "What should you stay away from during an earthquake?", options: ["Heavy furniture and windows", "The floor", "Soft pillows"], a: 0 }
+  ],
+  flood: [
+    { q: "What should you do during a flood?", options: ["Move to higher ground", "Play in the water", "Stay in the basement"], a: 0 },
+    { q: "Should you walk through flowing water?", options: ["Yes, it's fun", "No, it's dangerous", "Only with boots"], a: 1 },
+    { q: "Who should you wait for to tell you it's safe?", options: ["Friends", "Pets", "Adults or Emergency Workers"], a: 2 }
+  ],
+  injury: [
+    { q: "What should you do if someone falls badly?", options: ["Try to move them", "Tell an adult immediately", "Ignore them"], a: 1 },
+    { q: "How do you stop a cut from bleeding?", options: ["Wash it with mud", "Press firmly with a clean cloth", "Blow on it"], a: 1 }
+  ],
+  stranger: [
+    { q: "What should you do if a stranger tries to take you?", options: ["Go with them", "Yell 'NO' loudly and run", "Ask them questions"], a: 1 },
+    { q: "Who should you tell if a stranger approaches you?", options: ["A trusted adult", "A friend", "Keep it a secret"], a: 0 }
   ],
   default: [
     { q: "Who should you call in an emergency?", options: ["A friend", "Emergency Services (112)", "Nobody"], a: 1 },
@@ -138,6 +154,13 @@ export default function App() {
     saveProfile(newProfile);
     playChime();
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('lifeline_user_profile');
+    setProfile(null);
+    setOnboardName('');
+    setOnboardAvatar('🦸‍♂️');
   };
 
   const updateScore = (points: number) => {
@@ -268,7 +291,7 @@ export default function App() {
         </div>
       </div>
 
-      <div className="p-4 border-t border-slate-100">
+      <div className="p-4 border-t border-slate-100 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-2xl border-2 border-white shadow-sm">
             {profile.avatar}
@@ -280,6 +303,9 @@ export default function App() {
             </p>
           </div>
         </div>
+        <button onClick={handleLogout} className="text-slate-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50" title="Logout">
+          <LogOut size={20} />
+        </button>
       </div>
     </aside>
   );
